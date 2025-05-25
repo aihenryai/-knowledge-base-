@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI בינה מלאכותית עם הנרי - מאגר ידע</title>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #34a853;
+            --bg-color: #f8f9fa;
+            --text-color: #202124;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: var(--bg-color);
+        }
+
+        .nav-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Search Bar */
+        .search-container {
+            background: white;
+            padding: 1rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .search-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .search-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #1557b0;
+        }
+
+        /* Filters */
+        .filters-container {
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+            padding: 0 1rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--primary-color);
+        }
+
+        .filter-tab.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Content Grid */
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+        }
+
+        .view-btn {
+            padding: 0.5rem;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Grid View */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .content-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .card-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 12px;
+            font-size: 0.875rem;
+        }
+
+        .card-date {
+            color: #666;
+            font-size: 0.875rem;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .card-content {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            padding: 0.25rem 0.5rem;
+            background: #f0f0f0;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        /* List View */
+        .content-list {
+            display: none;
+        }
+
+        .list-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s;
+        }
+
+        .list-item:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: white;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            color: #666;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            float: left;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+
+            .search-wrapper {
+                flex-direction: column;
+            }
+
+            .search-input, .search-btn {
+                width: 100%;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Highlight for search results */
+        .highlight {
+            background-color: yellow;
+            padding: 2px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">🤖 AI בינה מלאכותית עם הנרי</div>
+            <nav class="nav-buttons">
+                <button class="nav-btn active" onclick="showView('home')">🏠 בית</button>
+                <button class="nav-btn" onclick="showView('categories')">📁 קטגוריות</button>
+                <button class="nav-btn" onclick="showView('timeline')">📅 ציר זמן</button>
+                <button class="nav-btn" onclick="showView('levels')">🎯 רמות</button>
+                <button class="nav-btn" onclick="showView('about')">ℹ️ אודות</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <div class="search-wrapper">
+            <input type="text" 
+                   class="search-input" 
+                   id="searchInput" 
+                   placeholder="חפש בתוכן... (למשל: ChatGPT, פרומפטים, סדנה)"
+                   onkeypress="if(event.key==='Enter') performSearch()">
+            <button class="search-btn" onclick="performSearch()">🔍 חפש</button>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-container">
+        <div class="filter-tabs" id="filterTabs">
+            <div class="filter-tab active" onclick="filterByCategory('all')">הכל</div>
+            <div class="filter-tab" onclick="filterByCategory('ai-tools')">🤖 כלי AI</div>
+            <div class="filter-tab" onclick="filterByCategory('workshops')">🎓 סדנאות</div>
+            <div class="filter-tab" onclick="filterByCategory('tips')">💡 טיפים</div>
+            <div class="filter-tab" onclick="filterByCategory('news')">📰 חדשות</div>
+            <div class="filter-tab" onclick="filterByCategory('case-studies')">📊 מקרי שימוש</div>
+            <div class="filter-tab" onclick="filterByCategory('resources')">🔗 משאבים</div>
+        </div>
+    </div>
+
+    <!-- Content Container -->
+    <div class="content-container">
+        <!-- View Toggle -->
+        <div class="view-toggle">
+            <button class="view-btn active" onclick="toggleView('grid')">⚏ רשת</button>
+            <button class="view-btn" onclick="toggleView('list')">☰ רשימה</button>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>טוען נתונים...</p>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid" id="contentGrid">
+            <!-- Content will be loaded here -->
+        </div>
+
+        <!-- Content List -->
+        <div class="content-list" id="contentList">
+            <!-- List view will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-section">
+        <h2 style="text-align: center; margin-bottom: 2rem;">📊 סטטיסטיקות</h2>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3 id="totalMessages">0</h3>
+                <p>סך הכל הודעות</p>
+            </div>
+            <div class="stat-item">
+                <h3 id="totalCategories">7</h3>
+                <p>קטגוריות</p>
+            </div>
+            <div class="stat-item">
+                <h3 id="totalMedia">0</h3>
+                <p>קבצי מדיה</p>
+            </div>
+            <div class="stat-item">
+                <h3 id="totalLinks">0</h3>
+                <p>קישורים</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="messageModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="modalContent">
+                <!-- Modal content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let messagesData = [];
+        let currentView = 'grid';
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadData();
+            renderContent();
+            updateStats();
+        });
+
+        // Load data from JSON
+        async function loadData() {
+            try {
+                showLoading(true);
+                const response = await fetch('data/result.json');
+                const data = await response.json();
+                messagesData = processMessages(data.messages);
+                showLoading(false);
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showLoading(false);
+                showError('שגיאה בטעינת הנתונים. אנא נסה שוב מאוחר יותר.');
+            }
+        }
+
+        // Process messages and add categories
+        function processMessages(messages) {
+            return messages.map((msg, index) => ({
+                ...msg,
+                category: detectCategory(msg.text),
+                level: detectLevel(msg.text),
+                tags: extractTags(msg.text),
+                id: msg.id || index,
+                formattedDate: formatDate(msg.date)
+            }));
+        }
+
+        // Category detection
+        function detectCategory(textArray) {
+            const text = textArray.join(' ').toLowerCase();
+            
+            if (text.includes('סדנה') || text.includes('קורס') || text.includes('workshop')) {
+                return 'workshops';
+            }
+            if (text.includes('chatgpt') || text.includes('claude') || text.includes('midjourney') || text.includes('dall-e')) {
+                return 'ai-tools';
+            }
+            if (text.includes('טיפ') || text.includes('טריק') || text.includes('פרומפט')) {
+                return 'tips';
+            }
+            if (text.includes('עדכון') || text.includes('חדש') || text.includes('update')) {
+                return 'news';
+            }
+            if (text.includes('case study') || text.includes('מקרה') || text.includes('דוגמה')) {
+                return 'case-studies';
+            }
+            if (text.includes('קישור') || text.includes('link') || text.includes('מאמר')) {
+                return 'resources';
+            }
+            
+            return 'general';
+        }
+
+        // Level detection
+        function detectLevel(textArray) {
+            const text = textArray.join(' ').toLowerCase();
+            
+            if (text.includes('מתחיל') || text.includes('בסיסי') || text.includes('beginner')) {
+                return 'beginner';
+            }
+            if (text.includes('מתקדם') || text.includes('advanced')) {
+                return 'advanced';
+            }
+            
+            return 'intermediate';
+        }
+
+        // Extract tags
+        function extractTags(textArray) {
+            const text = textArray.join(' ');
+            const tags = [];
+            
+            // Extract AI tools
+            const aiTools = ['ChatGPT', 'Claude', 'Midjourney', 'DALL-E', 'Vercel', 'GitHub Copilot'];
+            aiTools.forEach(tool => {
+                if (text.includes(tool)) tags.push(tool);
+            });
+            
+            // Extract hashtags
+            const hashtags = text.match(/#\w+/g) || [];
+            tags.push(...hashtags);
+            
+            return [...new Set(tags)]; // Remove duplicates
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('he-IL', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Render content
+        function renderContent() {
+            const filteredMessages = filterMessages();
+            
+            if (currentView === 'grid') {
+                renderGrid(filteredMessages);
+            } else {
+                renderList(filteredMessages);
+            }
+        }
+
+        // Filter messages
+        function filterMessages() {
+            let filtered = messagesData;
+            
+            // Filter by category
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(msg => msg.category === currentFilter);
+            }
+            
+            // Filter by search query
+            if (searchQuery) {
+                filtered = filtered.filter(msg => {
+                    const text = msg.text.join(' ').toLowerCase();
+                    return text.includes(searchQuery.toLowerCase());
+                });
+            }
+            
+            return filtered;
+        }
+
+        // Render grid view
+        function renderGrid(messages) {
+            const grid = document.getElementById('contentGrid');
+            grid.innerHTML = '';
+            
+            if (messages.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; color: #666;">לא נמצאו תוצאות</p>';
+                return;
+            }
+            
+            messages.forEach(msg => {
+                const card = createCard(msg);
+                grid.appendChild(card);
+            });
+        }
+
+        // Create card element
+        function createCard(msg) {
+            const card = document.createElement('div');
+            card.className = 'content-card';
+            card.onclick = () => showMessageDetails(msg);
+            
+            const categoryColors = {
+                'workshops': '#34a853',
+                'ai-tools': '#1a73e8',
+                'tips': '#fbbc04',
+                'news': '#ea4335',
+                'case-studies': '#673ab7',
+                'resources': '#ff6d00',
+                'general': '#666'
+            };
+            
+            const categoryNames = {
+                'workshops': '🎓 סדנאות',
+                'ai-tools': '🤖 כלי AI',
+                'tips': '💡 טיפים',
+                'news': '📰 חדשות',
+                'case-studies': '📊 מקרי שימוש',
+                'resources': '🔗 משאבים',
+                'general': '📝 כללי'
+            };
+            
+            const textPreview = msg.text.join(' ').substring(0, 150) + '...';
+            const highlightedText = searchQuery ? highlightText(textPreview, searchQuery) : textPreview;
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <span class="card-category" style="background: ${categoryColors[msg.category]}">
+                        ${categoryNames[msg.category]}
+                    </span>
+                    <span class="card-date">${msg.formattedDate}</span>
+                </div>
+                <div class="card-title">${msg.from || 'הודעה'}</div>
+                <div class="card-content">${highlightedText}</div>
+                <div class="card-tags">
+                    ${msg.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Highlight search text
+        function highlightText(text, query) {
+            if (!query) return text;
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        // Show message details in modal
+        function showMessageDetails(msg) {
+            const modal = document.getElementById('messageModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            const fullText = msg.text.join('<br><br>');
+            const highlightedText = searchQuery ? highlightText(fullText, searchQuery) : fullText;
+            
+            modalContent.innerHTML = `
+                <h2>${msg.from || 'הודעה'}</h2>
+                <p style="color: #666; margin-bottom: 1rem;">${msg.formattedDate}</p>
+                <div style="line-height: 1.8;">${highlightedText}</div>
+                
+                ${msg.media ? `
+                    <div style="margin-top: 1rem; padding: 1rem; background: #f0f0f0; border-radius: 8px;">
+                        <p><strong>מדיה מצורפת:</strong> ${msg.media.type}</p>
+                        ${msg.media.type === 'photo' ? 
+                            `<img src="media/${msg.media.file_id}.jpg" style="max-width: 100%; margin-top: 1rem; border-radius: 8px;">` : 
+                            `<a href="media/${msg.media.file_id}" target="_blank">פתח קובץ</a>`
+                        }
+                    </div>
+                ` : ''}
+                
+                ${msg.entities && msg.entities.length > 0 ? `
+                    <div style="margin-top: 1rem;">
+                        <strong>קישורים:</strong>
+                        ${msg.entities.filter(e => e.type === 'url').map(e => 
+                            `<a href="${e.url}" target="_blank" style="display: block; margin-top: 0.5rem; color: var(--primary-color);">${e.url}</a>`
+                        ).join('')}
+                    </div>
+                ` : ''}
+                
+                <div style="margin-top: 1rem;">
+                    <strong>תגיות:</strong> ${msg.tags.join(', ')}
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('messageModal').style.display = 'none';
+        }
+
+        // Filter by category
+        function filterByCategory(category) {
+            currentFilter = category;
+            
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderContent();
+        }
+
+        // Perform search
+        function performSearch() {
+            searchQuery = document.getElementById('searchInput').value;
+            renderContent();
+        }
+
+        // Toggle view
+        function toggleView(view) {
+            currentView = view;
+            
+            // Update buttons
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Toggle displays
+            if (view === 'grid') {
+                document.getElementById('contentGrid').style.display = 'grid';
+                document.getElementById('contentList').style.display = 'none';
+            } else {
+                document.getElementById('contentGrid').style.display = 'none';
+                document.getElementById('contentList').style.display = 'block';
+            }
+            
+            renderContent();
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalMessages').textContent = messagesData.length;
+            
+            const mediaCount = messagesData.filter(msg => msg.media).length;
+            document.getElementById('totalMedia').textContent = mediaCount;
+            
+            const linksCount = messagesData.reduce((count, msg) => {
+                const links = msg.entities ? msg.entities.filter(e => e.type === 'url').length : 0;
+                return count + links;
+            }, 0);
+            document.getElementById('totalLinks').textContent = linksCount;
+        }
+
+        // Show loading spinner
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+
+        // Show error message
+        function showError(message) {
+            const grid = document.getElementById('contentGrid');
+            grid.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: #ea4335;">
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        // Show different views
+        function showView(view) {
+            // Update active nav button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Implement different views
+            switch(view) {
+                case 'home':
+                    currentFilter = 'all';
+                    renderContent();
+                    break;
+                case 'categories':
+                    // Show category-based view
+                    renderCategoryView();
+                    break;
+                case 'timeline':
+                    // Show timeline view
+                    renderTimelineView();
+                    break;
+                case 'levels':
+                    // Show level-based view
+                    renderLevelView();
+                    break;
+                case 'about':
+                    // Show about page
+                    renderAboutView();
+                    break;
+            }
+        }
+
+        // Render category view
+        function renderCategoryView() {
+            const grid = document.getElementById('contentGrid');
+            const categories = ['workshops', 'ai-tools', 'tips', 'news', 'case-studies', 'resources'];
+            
+            grid.innerHTML = '<h2 style="grid-column: 1/-1; text-align: center; margin-bottom: 2rem;">תוכן לפי קטגוריות</h2>';
+            
+            categories.forEach(cat => {
+                const categoryMessages = messagesData.filter(msg => msg.category === cat);
+                if (categoryMessages.length > 0) {
+                    const section = document.createElement('div');
+                    section.style.gridColumn = '1/-1';
+                    section.innerHTML = `
+                        <h3 style="margin: 2rem 0 1rem;">${getCategoryName(cat)} (${categoryMessages.length})</h3>
+                        <div class="content-grid">
+                            ${categoryMessages.slice(0, 3).map(msg => createCard(msg).outerHTML).join('')}
+                        </div>
+                        ${categoryMessages.length > 3 ? 
+                            `<button class="search-btn" onclick="filterByCategory('${cat}')" style="margin: 1rem auto; display: block;">
+                                הצג הכל (${categoryMessages.length})
+                            </button>` : ''
+                        }
+                    `;
+                    grid.appendChild(section);
+                }
+            });
+        }
+
+        // Get category name in Hebrew
+        function getCategoryName(category) {
+            const names = {
+                'workshops': '🎓 סדנאות וקורסים',
+                'ai-tools': '🤖 כלי AI',
+                'tips': '💡 טיפים וטריקים',
+                'news': '📰 חדשות ועדכונים',
+                'case-studies': '📊 מקרי שימוש',
+                'resources': '🔗 משאבים וקישורים'
+            };
+            return names[category] || category;
+        }
+
+        // Render timeline view
+        function renderTimelineView() {
+            const grid = document.getElementById('contentGrid');
+            grid.innerHTML = '<h2 style="grid-column: 1/-1; text-align: center; margin-bottom: 2rem;">📅 ציר זמן</h2>';
+            
+            // Group messages by month
+            const messagesByMonth = {};
+            messagesData.forEach(msg => {
+                const date = new Date(msg.date);
+                const monthKey = `${date.getFullYear()}-${date.getMonth() + 1}`;
+                if (!messagesByMonth[monthKey]) {
+                    messagesByMonth[monthKey] = [];
+                }
+                messagesByMonth[monthKey].push(msg);
+            });
+            
+            // Sort months and render
+            Object.keys(messagesByMonth).sort().reverse().forEach(monthKey => {
+                const [year, month] = monthKey.split('-');
+                const monthName = new Date(year, month - 1).toLocaleDateString('he-IL', { month: 'long', year: 'numeric' });
+                
+                const section = document.createElement('div');
+                section.style.gridColumn = '1/-1';
+                section.innerHTML = `
+                    <h3 style="margin: 2rem 0 1rem;">${monthName} (${messagesByMonth[monthKey].length} הודעות)</h3>
+                    <div class="content-grid">
+                        ${messagesByMonth[monthKey].slice(0, 3).map(msg => createCard(msg).outerHTML).join('')}
+                    </div>
+                `;
+                grid.appendChild(section);
+            });
+        }
+
+        // Render level view
+        function renderLevelView() {
+            const grid = document.getElementById('contentGrid');
+            grid.innerHTML = '<h2 style="grid-column: 1/-1; text-align: center; margin-bottom: 2rem;">🎯 תוכן לפי רמות</h2>';
+            
+            const levels = ['beginner', 'intermediate', 'advanced'];
+            const levelNames = {
+                'beginner': '🌱 מתחילים',
+                'intermediate': '🌿 ביניים',
+                'advanced': '🌳 מתקדמים'
+            };
+            
+            levels.forEach(level => {
+                const levelMessages = messagesData.filter(msg => msg.level === level);
+                if (levelMessages.length > 0) {
+                    const section = document.createElement('div');
+                    section.style.gridColumn = '1/-1';
+                    section.innerHTML = `
+                        <h3 style="margin: 2rem 0 1rem;">${levelNames[level]} (${levelMessages.length})</h3>
+                        <div class="content-grid">
+                            ${levelMessages.slice(0, 3).map(msg => createCard(msg).outerHTML).join('')}
+                        </div>
+                    `;
+                    grid.appendChild(section);
+                }
+            });
+        }
+
+        // Render about view
+        function renderAboutView() {
+            const grid = document.getElementById('contentGrid');
+            grid.innerHTML = `
+                <div style="grid-column: 1/-1; max-width: 800px; margin: 0 auto; padding: 2rem;">
+                    <h2 style="text-align: center; margin-bottom: 2rem;">ℹ️ אודות</h2>
+                    <div style="background: white; padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--card-shadow);">
+                        <h3>ברוכים הבאים למאגר הידע של AI בינה מלאכותית עם הנרי! 🤖</h3>
+                        <p style="margin: 1rem 0;">
+                            מאגר זה מרכז את כל התכנים, הטיפים, הסדנאות והעדכונים שפורסמו בערוץ הטלגרם שלי.
+                            כאן תוכלו למצוא:
+                        </p>
+                        <ul style="margin: 1rem 2rem;">
+                            <li>🎓 סדנאות וקורסים בנושא AI</li>
+                            <li>🤖 מדריכים לכלי AI מובילים</li>
+                            <li>💡 טיפים וטריקים לשימוש יעיל</li>
+                            <li>📰 עדכונים על חידושים בתחום</li>
+                            <li>📊 מקרי שימוש מעשיים</li>
+                            <li>🔗 משאבים וקישורים שימושיים</li>
+                        </ul>
+                        
+                        <h4 style="margin-top: 2rem;">📱 עקבו אחרי ברשתות החברתיות:</h4>
+                        <div style="display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap;">
+                            <a href="https://youtube.com/@henryai" target="_blank" class="search-btn" style="background: #ff0000;">
+                                📺 YouTube
+                            </a>
+                            <a href="https://t.me/henryai" target="_blank" class="search-btn" style="background: #0088cc;">
+                                📢 Telegram
+                            </a>
+                            <a href="https://facebook.com/henryai" target="_blank" class="search-btn" style="background: #1877f2;">
+                                📘 Facebook
+                            </a>
+                            <a href="https://wa.me/972501234567" target="_blank" class="search-btn" style="background: #25d366;">
+                                💬 WhatsApp
+                            </a>
+                        </div>
+                        
+                        <p style="margin-top: 2rem; text-align: center; color: #666;">
+                            המאגר מתעדכן מדי חודש עם תכנים חדשים 🚀
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('messageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
